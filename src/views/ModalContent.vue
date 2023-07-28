@@ -69,7 +69,8 @@ export default {
                 return
             }
             if (this.mainString === '' && value === ',') {
-                console.log("comma cannot be at the beginning ")
+                this.mainString = '0,'
+                console.log("zero and comma added")
                 return
             }
             if (this.mainString.includes(',') && value === ',') {
