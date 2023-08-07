@@ -13,7 +13,9 @@
             <ion-button id="open-modal" expand="block" @click="openModal">Open Sheet Modal</ion-button>
             <ion-button id="open-modal" expand="block" @click="openModalEuro">Open Sheet Modal-Euro</ion-button>
             <ion-button id="open-modal" expand="block" @click="openModalKc">Open Sheet Modal-Kc</ion-button>
-
+            <div class="text-3xl mt-16">
+                hodnota kalkulacky: {{ fromCalculator }}
+            </div>
         </ion-content>
     </ion-page>    
 </template>
@@ -36,6 +38,8 @@ export default {
     data() {
         return {
             symbol: '',
+            toCalculator: '',
+            fromCalculator: '',
         }
     },
     methods: {
@@ -52,15 +56,23 @@ export default {
         },
         async openModalEuro() {
             this.symbol = "e"
+            this.toCalculator = "1000"
             const modal = await modalController.create({
                 component: ModalContent,
                 componentProps: {
-                    symbol: this.symbol // Pass the "symbol" as a prop to ModalContent.vue
+                    symbol: this.symbol, // Pass the "symbol" as a prop to ModalContent.vue
+                    toCalculator: this.toCalculator
                 },
                 breakpoints: [0, 0.65],
                 initialBreakpoint: 0.65,
             });
             modal.present();
+            const { data, role } = await modal.onWillDismiss();
+
+            if (role === 'done') {
+                this.fromCalculator = `${data}`;
+            }
+            
         },
         async openModalKc() {
             this.symbol = "Kc"
